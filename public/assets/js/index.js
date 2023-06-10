@@ -31,7 +31,10 @@ const getNotes = () =>
     headers: {
       'Content-Type': 'application/json',
     },
-  });
+  })
+
+// ADD notes to JSON
+.then(notes => notes.json());
 
 const saveNote = (note) =>
   fetch('/api/notes', {
@@ -89,10 +92,9 @@ const handleNoteDelete = (e) => {
     activeNote = {};
   }
 
-  deleteNote(noteId).then(() => {
-    getAndRenderNotes();
-    renderActiveNote();
-  });
+  deleteNote(noteId).then((notes) => notes.json())
+  // renderNoteList modified to use 'notes' instead of 'await notes.json()' (already converted to JSON)
+  .then(note => renderNoteList(note));
 };
 
 // Sets the activeNote and displays it
